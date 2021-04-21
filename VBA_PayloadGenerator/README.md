@@ -1,5 +1,5 @@
 # VBA Payload Generator
-Create a stageless VBA array for the exitfunc (thread or process), architecture (x86 or x64), and Listener
+Create a stageless VBA array with parameters exitfunc (thread or process), architecture (x86 or x64), and Listener
 
 # Usage
 
