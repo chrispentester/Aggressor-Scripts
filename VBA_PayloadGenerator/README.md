@@ -1,0 +1,9 @@
+# VBA Payload Generator
+Create a stageless VBA array for the exitfunc (thread or process), architecture (x86 or x64), and Listener
+
+# Usage
+
+
+Load the CNA script in Cobalt Strike, then the following command will be included:
+
+`vba_create [exitfunc] [x86/x64] [listener]` - Create a stageless VBA array for the listener, thread, and architecture
