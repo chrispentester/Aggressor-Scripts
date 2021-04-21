@@ -1,6 +1,6 @@
 # Author: Chris Sikes
 # Date: Apr 2021
-# Create a stageless VBA array for the listener, thread, and architecture
+# Create a stageless VBA array for the listener, with an exitfunc, and architecture
 
 
 alias vba_create {
