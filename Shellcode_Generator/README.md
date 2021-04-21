@@ -1,6 +1,6 @@
 # Shellcode Generator
 
-Create stageless shellcode for the listener, with an exitfunc, and architecture, of type array, hex, powershell-base64, vba, vbs, or veil
+Create stageless shellcode for a Cobalt Strike listener, with an exitfunc, and architecture, of type array, hex, powershell-base64, vba, vbs, or veil
 
 
 # Usage
