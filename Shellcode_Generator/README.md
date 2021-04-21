@@ -5,7 +5,7 @@ Create stageless shellcode for the listener, with an exitfunc, and architecture,
 
 # Usage
 
-NOTE: Only stageless
+NOTE: VBA array is too large for a VBA Macro
 
 Load the CNA script in Cobalt Strike, then the following command will be included:
 
