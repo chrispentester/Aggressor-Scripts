@@ -7,7 +7,7 @@ alias vba_create {
 	local('$bid $handle $data $exitfunc $listener $payload $arch');
 
 	# check our arguments
-	if (size(@_) != 5) {
+	if (size(@_) != 4) {
 		berror($1, "vba_create: not enough arguments. Enter Listener");
 		return;
 	}
@@ -17,23 +17,24 @@ alias vba_create {
 	$arch		= $3;
 	$listener = $4;
 
-	# Verify arch is x86 or x64
-	if (!($arch ismatch "x64") || !($arch ismatch "x86"))
-	{
-		berror($1, "vba_create: enter a valid architecture, either x64 or x86");
-		return;
-	}
 
 	# Verify exitfunc is thread or process
-	if (!($exitfunc ismatch "thread") || !($exitfunc ismatch "stageless"))
+	if (($exitfunc !ismatch "thread") && ($exitfunc !ismatch "process"))
 	{
 		berror($1, "vba_create: enter a valid exitfunc, either thread or process");
 		return;
 	}
 
-	if (listener_info($2) is $null)
+	# Verify arch is x86 or x64
+	if (($arch !ismatch "x64") && ($arch !ismatch "x86"))
 	{
-		berror($1, "Listener $3 is not found");
+		berror($1, "vba_create: enter a valid architecture, either x64 or x86");
+		return;
+	}
+
+	if (listener_info($4) is $null)
+	{
+		berror($1, "Listener $4 is not found");
 	}
 	else
 	{
@@ -45,7 +46,7 @@ alias vba_create {
 		closef($handle);
 
 		# announce to our user..
-		btask($1, "output to out.bin");
+		btask($1, "output to payload.vba");
 
 	}
 }
