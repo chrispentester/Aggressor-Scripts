@@ -20,9 +20,9 @@ alias shellcode_generator {
 
 
 	# Verify transform is array, hex, powershell-base64, vba, vbs, or veil
-	if (($transform !ismatch "array") && ($transform !ismatch "hex") && ($transform !ismatch "powershell-base64") && ($transform !ismatch "vba") && ($transform !ismatch "vbs") && ($transform !ismatch "veil"))
+	if (($transform !ismatch "array") && ($transform !ismatch "hex") && ($transform !ismatch "powershell-base64") && ($transform !ismatch "vba") && ($transform !ismatch "vbs") && ($transform !ismatch "veil") && ($transform !ismatch "raw"))
 	{
-		berror($1, "shellcode_generator: enter a valid shellcode format, either array, hex, powershell-base64, vba, vbs, or veil");
+		berror($1, "shellcode_generator: enter a valid shellcode format, either raw, array, hex, powershell-base64, vba, vbs, or veil");
 		return;
 	}
 
@@ -48,7 +48,10 @@ alias shellcode_generator {
 	{
     	# Generate a new payload 
     	$payload = payload($listener, $arch, $exitfunc);
-		$payload = transform($payload, $transform);
+		if ($transform !ismatch "raw")
+		{
+			$payload = transform($payload, $transform);
+		}
 		$handle = openf(">payload");
 		writeb($handle, $payload);
 		closef($handle);
@@ -59,4 +62,4 @@ alias shellcode_generator {
 	}
 }
 
-beacon_command_register("shellcode_generator", "Create stageless shellcode for the listener, thread, and architecture.", "Synopsis: shellcode_generator [shell_type] [exitfunc] [x86/x64] [listener] \n\nTo create stageless shellcode for the listener, and save it as 'payload' in the cobalt strike directory\nShellcode types:array, hex, powershell-base64, vba, vbs, or veil\nExitfunc options:thread/process.");
+beacon_command_register("shellcode_generator", "Create stageless shellcode for the listener, thread, and architecture.", "Synopsis: shellcode_generator [shell_type] [exitfunc] [x86/x64] [listener] \n\nTo create stageless shellcode for the listener, and save it as 'payload' in the cobalt strike directory\nShellcode types:raw, array, hex, powershell-base64, vba, vbs, or veil\nExitfunc options:thread/process.");
