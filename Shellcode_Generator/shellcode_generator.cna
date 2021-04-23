@@ -1,6 +1,6 @@
 # Author: Chris Sikes
 # Date: Apr 2021
-# Create stageless shellcode for the listener, with an exitfunc, and architecture, of type array, hex, powershell-base64, vba, vbs, or veil
+# Create stageless shellcode for the listener, with an exitfunc, and architecture, of type raw, array, hex, powershell-base64, vba, vbs, or veil
 
 
 alias shellcode_generator {
